@@ -1,5 +1,6 @@
 from funções import nomeArquivo, mostralistaDeNomes, formatar, título, progressoDownload
 from pytubefix import YouTube as yt
+from os import path
 
 opçõesSalvar = ('Áudio', 'Vídeo', 'Áudio e Vídeo')
 sufixos = ('Sem sufixo', '(pb)')
@@ -51,10 +52,11 @@ while True:
     for i, opc in enumerate(opçõesSalvar):
         print(f'{i} - {opc}')
     salvar = int(input('Insira a opção de salvamento -> '))
+    pathSalvar = path.join(path.expanduser('~'), 'Downloads')
     if salvar == 0:
-        yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path="C:/Users/nicol/Documents/Callebe/ConvertPyTube (Programa 3)/exec", filename=f'{nomeÁudio}.mp3')
+        yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=f'{nomeÁudio}.mp3')
     elif salvar == 1:
-        yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path="C:/Users/nicol/Documents/Callebe/ConvertPyTube (Programa 3)/exec", filename=f'{nomeVídeo}.mp4')
+        yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path=pathSalvar, filename=f'{nomeVídeo}.mp4')
     elif salvar == 2:
-        yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path="C:/Users/nicol/Documents/Callebe/ConvertPyTube (Programa 3)/exec", filename=f'{nomeÁudio}.mp3')
-        yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path="C:/Users/nicol/Documents/Callebe/ConvertPyTube (Programa 3)/exec", filename=f'{nomeVídeo}.mp4')
+        yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=f'{nomeÁudio}.mp3')
+        yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path=pathSalvar, filename=f'{nomeVídeo}.mp4')
