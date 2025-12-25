@@ -13,6 +13,8 @@ while True:
     if link.upper() in 'SAIR':
         break
     elif repetirComandos in 'SIM':
+        nomeArquivo(link)
+        listaDeNomes = mostralistaDeNomes()
         nome = listaDeNomes[escolhaNome]
 
         if escolhaSufixo == 0:
@@ -23,14 +25,6 @@ while True:
             nomeVídeo = f'{nome} {sufixos[escolhaSufixo]} (vídeo)'
         else:
             nomeÁudio = nomeVídeo = f'{nome} {sufixos[escolhaSufixo]}'
-        
-        if escolhaPath in 'SIMNÃO' and escolhaPath != '':
-            if escolhaPath == 'SIM' or escolhaPath == 'S' and escolhaPath != '':
-                pathSalvar = str(input('Insira o caminho da pasta -> ').strip())
-                if pathSalvar[0] == '"' and pathSalvar[-1] == '"':
-                    pathSalvar = pathSalvar.strip('"')
-            elif escolhaPath == 'NÃO' or escolhaPath == 'N' and escolhaPath != '':
-                pathSalvar = path.join(path.expanduser('~'), 'Downloads')
     
         if salvar == 0:
             yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=f'{nomeÁudio}.mp3')
@@ -39,6 +33,7 @@ while True:
         elif salvar == 2:
             yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=f'{nomeÁudio}.mp3')
             yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path=pathSalvar, filename=f'{nomeVídeo}.mp4')
+
         continue
     
     nomeArquivo(link)
@@ -117,4 +112,5 @@ while True:
             else:
                 repetirComandos = 'None'
                 print('Opção inválida! Digite novamente.')
+
     cont = 1
