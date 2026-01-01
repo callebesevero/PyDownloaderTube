@@ -1,4 +1,5 @@
-from funções import nomeArquivo, mostralistaDeNomes, formatar, título, progressoDownload
+from funções import nomeArquivo, mostralistaDeNomes, progressoDownload
+from texto import formatar, título
 from pytubefix import YouTube as yt
 from os import path
 
