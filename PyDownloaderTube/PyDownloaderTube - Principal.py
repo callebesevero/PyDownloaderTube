@@ -1,7 +1,10 @@
-from funções import nomeArquivo, mostralistaDeNomes, progressoDownload
-from texto import formatar, título
-from pytubefix import YouTube as yt
 from os import path
+from pathlib import WindowsPath
+from Funções import nomeArquivo, retornalistaDeNomes, progressoDownload
+from Texto import formatar, título
+import Sufixo
+import Mostra
+import Download
 
 sufixos = ('Sem sufixo', '(pb)')
 opçõesSalvar = ('Áudio', 'Vídeo', 'Áudio e Vídeo')
@@ -15,37 +18,18 @@ while True:
         break
     elif repetirComandos in 'SIM':
         nomeArquivo(link)
-        listaDeNomes = mostralistaDeNomes()
+        listaDeNomes = retornalistaDeNomes()
         nome = listaDeNomes[escolhaNome]
 
-        if escolhaSufixo == 0:
-            nomeÁudio = nome
-            nomeVídeo = nome
-        elif escolhaSufixo == 1:
-            nomeÁudio = f'{nome} {sufixos[escolhaSufixo]}'
-            nomeVídeo = f'{nome} {sufixos[escolhaSufixo]} (vídeo)'
-        else:
-            nomeÁudio = nomeVídeo = f'{nome} {sufixos[escolhaSufixo]}'
-    
-        if salvar == 0:
-            yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=f'{nomeÁudio}.mp3')
-        elif salvar == 1:
-            yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path=pathSalvar, filename=f'{nomeVídeo}.mp4')
-        elif salvar == 2:
-            yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=f'{nomeÁudio}.mp3')
-            yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path=pathSalvar, filename=f'{nomeVídeo}.mp4')
-
+        nomes = Sufixo.nomeSufixo(sufixos, nome, escolhaSufixo)
+        
+        Download.download(link, pathSalvar, salvar, nomes)
         continue
     
     nomeArquivo(link)
-    listaDeNomes = mostralistaDeNomes()
+    listaDeNomes = retornalistaDeNomes()
 
-    título('ESCOLHA UM DOS NOMES PARA O ARQUIVO', 60, 'amarelo')
-    for i, n in enumerate(listaDeNomes):
-        if i == 0:
-            print(formatar(f'{i} - {n}', 'negrito'))
-        else:
-            print(f'{i} - {n}')
+    Mostra.escolhaNome(listaDeNomes)
     escolhaNome = int(input('Insira o índice da opção de nome -> '))
     if escolhaNome == 0:
         nome = str(input('Insira o nome personalizado do arquivo -> ')).strip().title()
@@ -56,33 +40,19 @@ while True:
             print(formatar('Ocorreu um erro ao definir o nome. Insira as informações novamente!', cortexto='vermelho'))
             continue
     
-    título('ESCOLHA UM DOS SUFIXOS', 60, 'amarelo')
-    for i, suf in enumerate(sufixos):
-        if i == 0:
-            print(formatar(f'{i} - {suf}', 'negrito'))
-        else:
-            print(f'{i} - {suf}')
+    Mostra.escolhaSufixo(sufixos)
     escolhaSufixo = int(input('Digite o número do sufixo escolhido -> ').strip())
-    if escolhaSufixo <= len(sufixos):
-        if escolhaSufixo == 0:
-            nomeÁudio = nome
-            nomeVídeo = nome
-        elif escolhaSufixo == 1:
-            nomeÁudio = f'{nome} {sufixos[escolhaSufixo]}'
-            nomeVídeo = f'{nome} {sufixos[escolhaSufixo]} (vídeo)'
-        else:
-            nomeÁudio = nomeVídeo = f'{nome} {sufixos[escolhaSufixo]}'
+    nomes = Sufixo.nomeSufixo(sufixos, nome, escolhaSufixo)
+    nomeÁudio = nomes[0]
+    nomeVídeo = nomes[1]
 
-
-    título('OPÇÕES DE SALVAMENTO', 60, corseparadores='verde')
-    for i, opc in enumerate(opçõesSalvar):
-        print(f'{i} - {opc}')
+    Mostra.opçõesSalvamento(opçõesSalvar)
     salvar = int(input('Insira a opção de salvamento -> '))
 
-    título('DESEJA SALVAR EM PASTA PERSONALIZADA?', 60, corseparadores='verde')
+    título('PASTA PERSONALIZADA', 60)
     escolhaPath = 'None'
     while not escolhaPath in 'SIMNÃO':
-        escolhaPath = str(input('[SIM ou S/NÃO ou N] (Se NÃO, será baixado na pasta Downloads) -> ').strip().upper())
+        escolhaPath = str(input('Salvar em pasta personalizada? [SIM ou S/NÃO ou N] (Se NÃO, será baixado na pasta Downloads) -> ').strip().upper())
         if escolhaPath in 'SIMNÃO' and escolhaPath != '':
             if escolhaPath == 'SIM' or escolhaPath == 'S' and escolhaPath != '':
                 pathSalvar = str(input('Insira o caminho da pasta -> ').strip())
@@ -94,24 +64,17 @@ while True:
                 print('ERRO na sua digitação! Digite, por favor, SIM ou NÃO.')
                 escolhaPath = 'None'
 
-    if salvar == 0:
-        yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=f'{nomeÁudio}.mp3')
-    elif salvar == 1:
-        yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path=pathSalvar, filename=f'{nomeVídeo}.mp4')
-    elif salvar == 2:
-        yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=f'{nomeÁudio}.mp3')
-        yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path=pathSalvar, filename=f'{nomeVídeo}.mp4')
+    Download.download(link, pathSalvar, salvar, nomes)
     
+    # Convertendo m4a para mp3
+    if salvar == 0 or salvar == 2:
+        Download.converter(salvar, pathSalvar, nomeÁudio)
+
     if cont == 0:
         repetirComandos = 'None'
         while repetirComandos == 'None':
             repetirComandos = str(input('Deseja repetir os comandos para os próximos arquivos? [SIM ou S/NÃO ou N] -> ').strip().upper())
-            if repetirComandos == 'SIM' or repetirComandos == 'S' and repetirComandos != '':
-                ...
-            elif repetirComandos == 'NÃO' or repetirComandos == 'N' and repetirComandos != '':
-                ...
-            else:
+            if not repetirComandos == 'SIM' or not repetirComandos == 'S':
                 repetirComandos = 'None'
                 print('Opção inválida! Digite novamente.')
-
     cont = 1

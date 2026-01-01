@@ -46,16 +46,5 @@ def nomeArquivo(link):
             listaDeNomes.append(' '.join(nomeFracionado[nomeFracionado.index(t):]))
 
     
-def mostralistaDeNomes():
+def retornalistaDeNomes():
     return listaDeNomes
-
-
-def progressoDownload(stream, bytes, tamanhoFaltando):
-    tamanhoTotal = stream.filesize
-    tamanhoBaixado = tamanhoTotal - tamanhoFaltando
-    porcentagem = (tamanhoBaixado / tamanhoTotal) * 100
-    barrinha = f'{int(porcentagem) * "▮"}{(100 - int(porcentagem)) * "."}'
-    
-    print(f'\rA baixar {barrinha}   {porcentagem:.1f}%', end='', flush=True)
-    if tamanhoTotal == tamanhoBaixado:
-        print()
