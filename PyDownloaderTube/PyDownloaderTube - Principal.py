@@ -16,6 +16,7 @@ while True:
 
     if link.upper() in 'SAIR':
         break
+    # Repetindo comandos anteriores
     elif repetirComandos in 'SIM':
         nomeArquivo(link)
         listaDeNomes = retornalistaDeNomes()
@@ -23,7 +24,10 @@ while True:
 
         nomes = Sufixo.nomeSufixo(sufixos, nome, escolhaSufixo)
 
-        Download.download(link, pathSalvar, salvar, nomes)
+        Download.download(link, pathSalvar, salvar, nomes[0], nomes[1])
+
+        if salvar == 0 or salvar == 2:
+            Download.converter(pathSalvar, nomes[0])
         continue
     
     # Principal
@@ -44,8 +48,6 @@ while True:
     Mostra.escolhaSufixo(sufixos)
     escolhaSufixo = int(input('Digite o número do sufixo escolhido -> ').strip())
     nomes = Sufixo.nomeSufixo(sufixos, nome, escolhaSufixo)
-    nomeÁudio = nomes[0]
-    nomeVídeo = nomes[1]
 
     Mostra.opçõesSalvamento(opçõesSalvar)
     salvar = int(input('Insira a opção de salvamento -> '))
@@ -65,11 +67,11 @@ while True:
                 print('ERRO na sua digitação! Digite, por favor, SIM ou NÃO.')
                 escolhaPath = 'None'
 
-    Download.download(link, pathSalvar, salvar, nomes)
+    Download.download(link, pathSalvar, salvar, nomes[0], nomes[1])
     
     # Convertendo m4a para mp3
     if salvar == 0 or salvar == 2:
-        Download.converter(pathSalvar, nomeÁudio)
+        Download.converter(pathSalvar, nomes[0])
 
     if cont == 0:
         repetirComandos = 'None'

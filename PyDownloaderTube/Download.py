@@ -2,7 +2,7 @@ def progressoDownload(
     stream, 
     bytes, 
     tamanhoFaltando
-):
+    ):
     tamanhoTotal = stream.filesize
     tamanhoBaixado = tamanhoTotal - tamanhoFaltando
     porcentagem = (tamanhoBaixado / tamanhoTotal) * 100
@@ -17,13 +17,10 @@ def download(
         link, 
         pathSalvar, 
         salvar, 
-        nomes
-):
-    
+        nomeÁudio,
+        nomeVídeo
+    ):
     from pytubefix import YouTube as yt
-
-    nomeÁudio = nomes[0]
-    nomeVídeo = nomes[1]
     # Áudio
     if salvar == 0:
         yt(link, on_progress_callback=progressoDownload).streams.get_audio_only().download(output_path=pathSalvar, filename=nomeÁudio)
@@ -39,7 +36,7 @@ def download(
 def converter(
         pathSalvar: str, 
         nomeÁudio: str
-):
+    ):
     from pydub import AudioSegment
     import os
 
