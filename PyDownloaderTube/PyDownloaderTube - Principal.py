@@ -1,5 +1,5 @@
 from os import path
-from pathlib import WindowsPath
+from pathlib import Path
 from Funções import nomeArquivo, retornalistaDeNomes
 from Texto import formatar, título
 import Sufixo
@@ -70,8 +70,13 @@ while True:
     Download.download(link, pathSalvar, salvar, nomes[0], nomes[1])
     
     # Convertendo m4a para mp3
-    if salvar == 0 or salvar == 2:
-        Download.converter(pathSalvar, nomes[0])
+    try:
+        if salvar == 0 or salvar == 2:
+            Download.converter(pathSalvar, nomes[0])
+    except:
+        print('Ocorreu um erro na conversão do áudio para mp3. Tente novamente!')
+    else:
+        Path(rf'{pathSalvar}\{nomes[0]}').unlink()
 
     if cont == 0:
         repetirComandos = 'None'
