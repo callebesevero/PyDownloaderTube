@@ -26,6 +26,7 @@ while True:
         Download.download(link, pathSalvar, salvar, nomes)
         continue
     
+    # Principal
     nomeArquivo(link)
     listaDeNomes = retornalistaDeNomes()
 
@@ -74,7 +75,7 @@ while True:
         repetirComandos = 'None'
         while repetirComandos == 'None':
             repetirComandos = str(input('Deseja repetir os comandos para os próximos arquivos? [SIM ou S/NÃO ou N] -> ').strip().upper())
-            if not repetirComandos == 'SIM' or not repetirComandos == 'S':
+            if not repetirComandos == 'SIM' and not repetirComandos == 'S' and not repetirComandos == 'NÃO' and not repetirComandos == 'N':
                 repetirComandos = 'None'
                 print('Opção inválida! Digite novamente.')
-    cont = 1
+        cont = 1

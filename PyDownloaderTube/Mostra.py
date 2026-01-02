@@ -20,6 +20,6 @@ def escolhaSufixo(sufixos):
 
     
 def opçõesSalvamento(opçõesSalvar):
-    título('OPÇÕES DE SALVAMENTO', 60, corseparadores='verde')
+    título('OPÇÕES DE SALVAMENTO', 60)
     for i, opc in enumerate(opçõesSalvar):
         print(f'{i} - {opc}')

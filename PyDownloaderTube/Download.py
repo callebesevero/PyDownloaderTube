@@ -41,13 +41,16 @@ def converter(
         nomeÁudio: str
 ):
     from pydub import AudioSegment
+    import os
 
-    # AudioSegment.converter = r"C:\Users\Lean\.ffmpeg\ffmpeg-8.0.1-essentials_build\bin\ffmpeg.exe"
-    # AudioSegment.ffprobe = r"C:\Users\Lean\.ffmpeg\ffmpeg-8.0.1-essentials_build\bin\ffprobe.exe"
+    os.environ["PATH"] += os.pathsep + r"C:\Users\Lean\.ffmpeg\ffmpeg-8.0.1-essentials_build\bin"
+
+    AudioSegment.converter = r"C:\Users\Lean\.ffmpeg\ffmpeg-8.0.1-essentials_build\bin\ffmpeg.exe"
+    AudioSegment.ffprobe = r"C:\Users\Lean\.ffmpeg\ffmpeg-8.0.1-essentials_build\bin\ffprobe.exe"
 
     pathÁudio = rf'{pathSalvar}\{nomeÁudio}'
     áudio = AudioSegment.from_file(pathÁudio)
-    
+
     nomeNovoÁudio = nomeÁudio.replace('m4a', 'mp3')
     pathNovoÁudio = rf'{pathSalvar}\{nomeNovoÁudio}'
     áudio.export(out_f=pathNovoÁudio, format='mp3', bitrate='320k')

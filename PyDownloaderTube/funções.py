@@ -1,8 +1,9 @@
-from pytubefix import YouTube as yt
 listaDeNomes = list()
 
 
 def nomeArquivo(link):
+    from pytubefix import YouTube as yt
+    
     listaDeNomes.clear()
     listaDeNomes.append('Escolha personalizada')
 
