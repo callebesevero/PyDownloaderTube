@@ -1,6 +1,6 @@
 from os import path
 from pathlib import WindowsPath
-from Funções import nomeArquivo, retornalistaDeNomes, progressoDownload
+from Funções import nomeArquivo, retornalistaDeNomes
 from Texto import formatar, título
 import Sufixo
 import Mostra
@@ -22,7 +22,7 @@ while True:
         nome = listaDeNomes[escolhaNome]
 
         nomes = Sufixo.nomeSufixo(sufixos, nome, escolhaSufixo)
-        
+
         Download.download(link, pathSalvar, salvar, nomes)
         continue
     
@@ -68,7 +68,7 @@ while True:
     
     # Convertendo m4a para mp3
     if salvar == 0 or salvar == 2:
-        Download.converter(salvar, pathSalvar, nomeÁudio)
+        Download.converter(pathSalvar, nomeÁudio)
 
     if cont == 0:
         repetirComandos = 'None'

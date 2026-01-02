@@ -1,4 +1,8 @@
-def progressoDownload(stream, bytes, tamanhoFaltando):
+def progressoDownload(
+    stream, 
+    bytes, 
+    tamanhoFaltando
+):
     tamanhoTotal = stream.filesize
     tamanhoBaixado = tamanhoTotal - tamanhoFaltando
     porcentagem = (tamanhoBaixado / tamanhoTotal) * 100
@@ -9,7 +13,13 @@ def progressoDownload(stream, bytes, tamanhoFaltando):
         print()
 
 
-def download(link, pathSalvar, salvar, nomes):
+def download(
+        link, 
+        pathSalvar, 
+        salvar, 
+        nomes
+):
+    
     from pytubefix import YouTube as yt
 
     nomeÁudio = nomes[0]
@@ -26,10 +36,18 @@ def download(link, pathSalvar, salvar, nomes):
         yt(link, on_progress_callback=progressoDownload).streams.get_highest_resolution().download(output_path=pathSalvar, filename=nomeVídeo)
 
 
-def converter(salvar, pathSalvar, nomeÁudio):
+def converter(
+        pathSalvar: str, 
+        nomeÁudio: str
+):
     from pydub import AudioSegment
 
+    # AudioSegment.converter = r"C:\Users\Lean\.ffmpeg\ffmpeg-8.0.1-essentials_build\bin\ffmpeg.exe"
+    # AudioSegment.ffprobe = r"C:\Users\Lean\.ffmpeg\ffmpeg-8.0.1-essentials_build\bin\ffprobe.exe"
+
     pathÁudio = rf'{pathSalvar}\{nomeÁudio}'
-    print(pathÁudio)
     áudio = AudioSegment.from_file(pathÁudio)
-    áudio.export(out_f=pathSalvar, format='mp3', bitrate='320k')
+    
+    nomeNovoÁudio = nomeÁudio.replace('m4a', 'mp3')
+    pathNovoÁudio = rf'{pathSalvar}\{nomeNovoÁudio}'
+    áudio.export(out_f=pathNovoÁudio, format='mp3', bitrate='320k')
